@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.sky_k.control.MainActivity"
+    android:background="@drawable/fondo"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/posX" />
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:JV_buttonColor="#ffffff"
+        custom:JV_borderColor="#ffffff"
+        custom:JV_backgroundColor="#11000000"
+        custom:JV_borderWidth="4dp"
+        android:id="@+id/JOY"
+        android:layout_gravity="left"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/posY"
+        android:layout_alignStart="@+id/posY" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/posY"
+        android:layout_below="@+id/posX"
+        android:layout_alignLeft="@+id/posX"
+        android:layout_alignStart="@+id/posX" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ag"
+        android:layout_alignTop="@+id/posX"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="195dp"
+        android:layout_marginEnd="195dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fz"
+        android:layout_alignTop="@+id/posY"
+        android:layout_alignRight="@+id/ag"
+        android:layout_alignEnd="@+id/ag" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disparar"
+        android:id="@+id/button"
+        android:translationZ="6dp"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/fz"
+        android:layout_alignStart="@+id/fz" />
+</RelativeLayout>
