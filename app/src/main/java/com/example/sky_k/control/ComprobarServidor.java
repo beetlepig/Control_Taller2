@@ -61,23 +61,26 @@ public class ComprobarServidor extends AppCompatActivity {
                             try {
 
                                 i= InetAddress.getByName(ipServidor);
-                                if(i.isReachable(300)) {
+                                if(i.isReachable(500)) {
                                     Intent myIntent = new Intent(ComprobarServidor.this, MainActivity.class);
                                     myIntent.putExtra("ipeson", ipServidor);
                                     ComprobarServidor.this.startActivity(myIntent);
 
 
-                                }else{
+                                }else {
                                     new Thread() {
                                         public void run() {
 
 
                                             runOnUiThread(new Runnable() {
 
-                                                @Override
+
                                                 public void run() {
-                                                    Toast toast = Toast.makeText(getApplicationContext(), "servidor no encontrado",Toast.LENGTH_SHORT);
+                                                    Toast toast = Toast.makeText(getApplicationContext(), "Ping no respondindo, Continuando", Toast.LENGTH_LONG);
                                                     toast.show();
+                                                    Intent myIntent = new Intent(ComprobarServidor.this, MainActivity.class);
+                                                    myIntent.putExtra("ipeson", ipServidor);
+                                                    ComprobarServidor.this.startActivity(myIntent);
                                                 }
                                             });
 
@@ -85,7 +88,6 @@ public class ComprobarServidor extends AppCompatActivity {
 
                                         }
                                     }.start();
-
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -133,4 +135,6 @@ public class ComprobarServidor extends AppCompatActivity {
     private static final Pattern PARTIAl_IP_ADDRESS =
             Pattern.compile("^((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])\\.){0,3}"+
                     "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])){0,1}$");
+
+
 }
