@@ -25,7 +25,7 @@ public class ComprobarServidor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comprobar_servidor);
         ip= (EditText) findViewById (R.id.ip);
-        if(ip.getText().toString().equalsIgnoreCase("Ip del host")) {
+/*        if(ip.getText().toString().equalsIgnoreCase("Ip del host")) {
             ip.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
@@ -34,6 +34,7 @@ public class ComprobarServidor extends AppCompatActivity {
                 }
             });
         }
+        */
         ip.addTextChangedListener(new TextWatcher() {
              public void onTextChanged(CharSequence s, int start, int before, int count) {}
              public void beforeTextChanged(CharSequence s,int start,int count,int after) {}

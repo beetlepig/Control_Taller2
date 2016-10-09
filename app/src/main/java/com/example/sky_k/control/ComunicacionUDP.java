@@ -2,12 +2,16 @@ package com.example.sky_k.control;
 
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Observable;
+
+import serializable.InstruccionAndroid;
 
 public class ComunicacionUDP extends Observable implements Runnable {
 
@@ -21,12 +25,13 @@ public class ComunicacionUDP extends Observable implements Runnable {
         public static  final int DEFAULT_PORT = 5000;
         InetAddress ia;
         private DatagramSocket ms;
-        private String posiciones= "0:0:0:0:0:0:0";
+
+        public InstruccionAndroid instruccion;
         private boolean running;
         private boolean connecting;
         private boolean reset;
         private boolean errorNotified;
-        private byte[] data;
+
 
 
 
@@ -59,9 +64,7 @@ public class ComunicacionUDP extends Observable implements Runnable {
   public void startSeding(){
         new Thread(sendMessage()).start();
     }
-    public void setPosiciones(String p){
-        posiciones=p;
-    }
+
 
         //metodo no usado actualmente ya que el cliente no recibe paquetes
         public void run() {
@@ -127,14 +130,14 @@ public class ComunicacionUDP extends Observable implements Runnable {
                                 // Validate destAddress
 
 
-                                    data = posiciones.getBytes();
-                                    DatagramPacket packet = new DatagramPacket(data, data.length, ia, DEFAULT_PORT);
 
 
-                                    ms.send(packet);
+
+                                    ms.send(enviarObjeto(instruccion,ia,DEFAULT_PORT));
 
 
-                                Thread.sleep(17);
+                                 //   System.out.println("objeto enviado");
+                                Thread.sleep(15);
                             } catch (UnknownHostException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -153,35 +156,31 @@ public class ComunicacionUDP extends Observable implements Runnable {
 return r;
         }
 
-    public void MandarDisparo(final String message) {
-        new Thread(new Runnable() {
 
-            public void run() {
-                if (ms != null) {
+    private DatagramPacket enviarObjeto(Object ob, InetAddress destAddress, int destPort) throws IOException {
+        byte[] data= serializar(ob);
+        DatagramPacket packet = new DatagramPacket(data, data.length, destAddress, destPort);
 
-                    try {
+        return  packet;
 
-                        byte[] data = message.getBytes();
-                        DatagramPacket packet = new DatagramPacket(data, data.length, ia, DEFAULT_PORT);
+    }
 
 
-                        ms.send(packet);
-                        System.out.println("Data was sent");
+    private byte[] serializar(Object data) {
+        byte[] bytes = null;
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(data);
+            bytes = baos.toByteArray();
 
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else{
-                    setChanged();
-                    notifyObservers("Not connected");
-                    clearChanged();
-                }
+            // Close streams
+            oos.close();
 
-            }
-        }).start();
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
     }
 //metono no usado actualmente, pero posiblemente usado para futura revisiones
         public DatagramPacket receiveMessage() {
